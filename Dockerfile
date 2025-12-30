@@ -17,4 +17,7 @@ EXPOSE 3000
 EXPOSE 3001
 EXPOSE 80
 
-CMD ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "none"]
+RUN mkdir -p /app
+WORKDIR /app
+
+CMD ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "none","/app"]
