@@ -20,8 +20,8 @@ EXPOSE 80
 RUN mkdir -p /app
 WORKDIR /app
 
-RUN npm install -g @anthropic-ai/claude-code
-RUN npm install -g @anthropic-ai/claude-code-router
+RUN /root/.nvm/versions/node/v24.10.0/bin/npm install -g @anthropic-ai/claude-code
+RUN /root/.nvm/versions/node/v24.10.0/bin/npm install -g @anthropic-ai/claude-code-router
 
 # RUN /root/.cargo/bin/rustup toolchain install 1.89.0
 
