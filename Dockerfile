@@ -21,7 +21,7 @@ RUN mkdir -p /app
 WORKDIR /app
 
 ENV PATH="/root/.nvm/versions/node/v24.10.0/bin:$PATH"
-RUN  npm install -g @anthropic-ai/claude-code && npm install -g @anthropic-ai/claude-code-router
+RUN npm install -g @anthropic-ai/claude-code && npm install -g @musistudio/claude-code-router
 
 # RUN /root/.cargo/bin/rustup toolchain install 1.89.0
 
