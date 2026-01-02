@@ -117,6 +117,16 @@ The `example.json` file includes:
 
 You can customize the models and routing preferences in the configuration file according to your needs.
 
+### Solana MCP Server
+
+To add the Solana Model Context Protocol (MCP) server for enhanced Solana development capabilities, run:
+
+```bash
+claude mcp add --transport http solana-mcp-server https://mcp.solana.com/mcp
+```
+
+This command adds the Solana MCP server, which provides Claude with access to Solana-specific tools and context for better code assistance and development workflows.
+
 ## What's Included
 
 - **Ubuntu 24.04** - Base operating system
