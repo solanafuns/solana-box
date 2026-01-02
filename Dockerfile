@@ -8,7 +8,7 @@ RUN echo '[151,24,169,16,188,163,225,2,165,53,223,62,13,172,255,113,123,124,255,
 RUN /root/.cargo/bin/rustup component add rust-analyzer
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 RUN code-server --install-extension ms-python.python 
-RUN code-server --install-extension rust-lang.rust-analyzer
+# RUN code-server --install-extension rust-lang.rust-analyzer
 # RUN rustc --version && solana --version && anchor --version && surfpool --version && node --version && yarn --version
 
 EXPOSE 8080

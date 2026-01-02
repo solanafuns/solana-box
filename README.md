@@ -18,7 +18,7 @@ Solana Box is a pre-configured development container that includes all the tools
 Run the container with the following command:
 
 ```bash
-docker run -d --rm -p 8080:8080 --platform=linux/amd64 ghcr.io/solanafuns/solana-box:latest
+docker run -d --rm -p 8080:8080 --platform=linux/amd64 -v /tmp:/app ghcr.io/solanafuns/solana-box:latest
 ```
 
 After starting the container, open your browser and navigate to:
