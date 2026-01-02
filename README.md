@@ -11,6 +11,7 @@ Solana Box is a pre-configured development container that includes all the tools
 - **Code Server** - VS Code in your browser with extensions pre-installed
   - Python extension
   - Rust Analyzer extension
+- **Claude Code Router** - AI code assistant router with OpenRouter support
 - **Development Tools** - Build essentials, pkg-config, protobuf compiler, and more
 
 ## Quick Start
@@ -61,12 +62,68 @@ docker run -d --rm -p 3000:8080 --platform=linux/amd64 ghcr.io/solanafuns/solana
 
 Then access it at `http://localhost:3000`
 
+## Configuration
+
+### Proxy Settings
+
+If you need to configure proxy settings inside the container (e.g., when behind a corporate firewall or using a local proxy), you can set the proxy environment variables. Inside the container's terminal, run:
+
+```bash
+export https_proxy=http://host.docker.internal:7890 http_proxy=http://host.docker.internal:7890 all_proxy=socks5://host.docker.internal:7890
+```
+
+**Note:** 
+- `host.docker.internal` allows the container to access services running on the host machine
+- Adjust the port number (7890) to match your proxy server's port
+- These settings will only persist for the current session. To make them permanent, add them to your shell profile (e.g., `~/.bashrc` or `~/.zshrc`)
+
+### Claude Code Router Configuration
+
+The container includes `claude-code-router` pre-installed, which allows you to route AI code assistant requests through OpenRouter. To configure it:
+
+1. **Copy the example configuration file:**
+
+   ```bash
+   cp example.json ~/.claude-code-router/config.json
+   ```
+
+2. **Edit the configuration file** and replace `your_openrouter_api_key_here` with your actual OpenRouter API key:
+
+   ```bash
+   vim ~/.claude-code-router/config.json
+   ```
+
+3. **Start the router:**
+
+   ```bash
+   claude-code-router start
+   ```
+
+   Or use the `ccr` command:
+
+   ```bash
+   ccr start
+   ```
+
+The router will be available at `http://localhost:3456` (or the port specified in your config).
+
+**Configuration Options:**
+
+The `example.json` file includes:
+- OpenRouter API endpoint configuration
+- Multiple Claude model options (3.5 Sonnet, Opus, Haiku)
+- Default model routing settings
+- Customizable host and port settings
+
+You can customize the models and routing preferences in the configuration file according to your needs.
+
 ## What's Included
 
 - **Ubuntu 24.04** - Base operating system
 - **Solana CLI** - Installed via official installer
 - **Rust 1.89.0** - Rust toolchain for Solana program development
 - **Code Server** - Web-based VS Code editor
+- **Claude Code Router** - Pre-installed for AI code assistant routing
 - **Development Tools**:
   - gcc, build-essential
   - pkg-config
@@ -80,6 +137,7 @@ Then access it at `http://localhost:3000`
 The container exposes the following ports:
 
 - `8080` - Code Server (VS Code web interface)
+- `3456` - Claude Code Router (AI assistant router)
 - `443` - HTTPS
 - `3000` - Additional development port
 - `3001` - Additional development port
