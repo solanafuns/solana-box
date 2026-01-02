@@ -1,6 +1,6 @@
 FROM ubuntu:24.04 
 RUN apt-get update 
-RUN apt-get install -y curl gcc vim 
+RUN apt-get install -y curl gcc vim tini git
 RUN apt-get install -y  build-essential    pkg-config     libudev-dev llvm libclang-dev     protobuf-compiler libssl-dev 
 RUN curl --proto '=https' --tlsv1.2 -sSfL https://solana-install.solana.workers.dev | bash
 ENV PATH="/root/.local/share/solana/install/active_release/bin:$PATH"
@@ -25,4 +25,5 @@ RUN npm install -g @anthropic-ai/claude-code && npm install -g @musistudio/claud
 
 # RUN /root/.cargo/bin/rustup toolchain install 1.89.0
 
+ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "none","/app"]
