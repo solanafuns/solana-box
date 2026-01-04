@@ -21,6 +21,8 @@ EXPOSE 5173
 RUN mkdir -p /app
 WORKDIR /app
 
+COPY settings.json /root/.config/code-server/User/settings.json
+
 ENV PATH="/root/.nvm/versions/node/v24.10.0/bin:$PATH"
 RUN npm install -g @anthropic-ai/claude-code && npm install -g @musistudio/claude-code-router
 
