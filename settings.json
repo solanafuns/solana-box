@@ -1,4 +1,6 @@
 {
+    "rust-analyzer.server.path": "/root/.cargo/bin/rust-analyzer",
     "editor.fontSize": 15,
-    "terminal.integrated.fontSize": 15
+    "terminal.integrated.fontSize": 15,
+    "workbench.colorTheme": "Default Dark Modern"
 }
