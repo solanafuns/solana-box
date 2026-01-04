@@ -8,7 +8,7 @@ RUN echo '[151,24,169,16,188,163,225,2,165,53,223,62,13,172,255,113,123,124,255,
 RUN /root/.cargo/bin/rustup component add rust-analyzer
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 RUN code-server --install-extension ms-python.python 
-# RUN code-server --install-extension rust-lang.rust-analyzer
+RUN code-server --install-extension rust-lang.rust-analyzer
 # RUN rustc --version && solana --version && anchor --version && surfpool --version && node --version && yarn --version
 
 EXPOSE 8080
@@ -21,7 +21,7 @@ EXPOSE 5173
 RUN mkdir -p /app
 WORKDIR /app
 
-COPY settings.json /root/.config/code-server/User/settings.json
+COPY settings.json /root/.local/share/code-server/User/settings.json
 
 ENV PATH="/root/.nvm/versions/node/v24.10.0/bin:$PATH"
 RUN npm install -g @anthropic-ai/claude-code && npm install -g @musistudio/claude-code-router
