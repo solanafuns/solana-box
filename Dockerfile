@@ -35,6 +35,6 @@ RUN npm install -g @anthropic-ai/claude-code && npm install -g @musistudio/claud
 ENTRYPOINT ["/usr/bin/tini", "--"]
 COPY CLAUDE.md /root/.claude/CLAUDE.md
 ADD example /app/example
-RUN cd example && cargo build-sbf
+RUN RUN which cargo && cd example && cargo build-sbf
 
 CMD ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "none","/app"]
