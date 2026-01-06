@@ -8,5 +8,5 @@
         export https_proxy=http://host.docker.internal:7890 http_proxy=http://host.docker.internal:7890 all_proxy=socks5://host.docker.internal:7890
     ```
 
-- solana-cli version: 3.0.13 
+- solana-cli version: 3.0.13
 - anchor version : anchor-0.32.1
