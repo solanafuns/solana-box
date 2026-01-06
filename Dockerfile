@@ -25,7 +25,7 @@ EXPOSE 5173
 
 RUN mkdir -p /app
 WORKDIR /app
-RUN mkdir -p /root/.claude-router/logs && mkdir -p /root/.claude-router/plugins 
+RUN mkdir -p /root/.claude-router/logs && mkdir -p /root/.claude-router/plugins && mkdir -p /root/.claude/
 RUN cp /box/settings.json /root/.local/share/code-server/Machine/settings.json && cp /box/CLAUDE.md /root/.claude/CLAUDE.md && mv /box/example /app/example && cp /box/ccr-config.json /root/.claude-router/config.json
 
 RUN npm install -g @anthropic-ai/claude-code && npm install -g @musistudio/claude-code-router
