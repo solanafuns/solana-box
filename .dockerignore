@@ -3,10 +3,6 @@
 .gitignore
 .gitattributes
 
-# Documentation
-README.md
-CLAUDE.md
-problems.md
 
 # Rust build artifacts
 **/target/
