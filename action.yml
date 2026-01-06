@@ -1,0 +1,46 @@
+name: 'Deploy Solana Program'
+description: 'Build and deploy a Solana program to devnet, testnet, or mainnet-beta'
+author: 'Solana Box'
+
+inputs:
+  solana_keypair:
+    description: 'Solana deployer wallet keypair (JSON format)'
+    required: true
+  program_keypair:
+    description: 'Program keypair (JSON format). If not provided, a new one will be generated'
+    required: false
+  cluster:
+    description: 'Solana cluster to deploy to (devnet, testnet, or mainnet-beta)'
+    required: false
+    default: 'devnet'
+  program_path:
+    description: 'Path to the Solana program directory (where Cargo.toml is located)'
+    required: false
+    default: '.'
+  program_name:
+    description: 'Name of the program (should match the package name in Cargo.toml)'
+    required: false
+    default: ''
+  solana_version:
+    description: 'Solana CLI version to install'
+    required: false
+    default: 'stable'
+  airdrop_amount:
+    description: 'Amount of SOL to airdrop (only for devnet/testnet)'
+    required: false
+    default: '2'
+
+outputs:
+  program_id:
+    description: 'The deployed program ID'
+  program_address:
+    description: 'The deployed program address (same as program_id)'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+
+branding:
+  icon: 'box'
+  color: 'purple'
+

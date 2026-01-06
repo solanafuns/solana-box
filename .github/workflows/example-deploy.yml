@@ -1,0 +1,46 @@
+# Example workflow showing how to use the Solana Deploy Action
+# This workflow deploys the example contract to devnet
+
+name: Deploy Example Contract to Devnet
+
+on:
+    push:
+        branches:
+            - main
+            - master
+    workflow_dispatch:
+        inputs:
+            cluster:
+                description: "Solana cluster to deploy to"
+                required: false
+                default: "devnet"
+                type: choice
+                options:
+                    - devnet
+                    - testnet
+                    - mainnet-beta
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Deploy Solana Program
+              uses: ./
+              with:
+                  solana_keypair: ${{ secrets.SOLANA_KEYPAIR }}
+                  program_keypair: ${{ secrets.PROGRAM_KEYPAIR }}
+                  cluster: ${{ github.event.inputs.cluster || 'devnet' }}
+                  program_path: "./example"
+                  program_name: "example"
+                  airdrop_amount: "2"
+              id: deploy
+
+            - name: Display Deployment Results
+              run: |
+                  echo "✅ Program deployed successfully!"
+                  echo "📦 Program ID: ${{ steps.deploy.outputs.program_id }}"
+                  echo "🌐 Cluster: ${{ github.event.inputs.cluster || 'devnet' }}"
+                  echo "📍 Program Address: ${{ steps.deploy.outputs.program_address }}"
