@@ -38,7 +38,7 @@ outputs:
 
 runs:
   using: 'node20'
-  main: 'dist/index.js'
+  main: 'scripts/index.js'
 
 branding:
   icon: 'box'
