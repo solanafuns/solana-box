@@ -4,8 +4,8 @@ author: 'Solana Box'
 
 inputs:
   solana_keypair:
-    description: 'Solana deployer wallet keypair (JSON format)'
-    required: true
+    description: 'Solana deployer wallet keypair (JSON format). If not provided, a new keypair will be generated'
+    required: false
   program_keypair:
     description: 'Program keypair (JSON format). If not provided, a new one will be generated'
     required: false
