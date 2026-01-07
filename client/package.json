@@ -1,0 +1,14 @@
+{
+  "name": "solana-hello-client",
+  "version": "1.0.0",
+  "description": "Client to submit Hello World messages with timestamp to Solana",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "hello": "node submit-hello.js"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.95.0",
+    "borsh": "^1.5.0"
+  }
+}
