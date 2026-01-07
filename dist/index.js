@@ -27564,7 +27564,7 @@ const path = __nccwpck_require__(6928);
 async function run() {
   try {
     // Get inputs
-    const solanaKeypair = core.getInput('solana_keypair', { required: true });
+    const solanaKeypair = core.getInput('solana_keypair', { required: false });
     const programKeypair = core.getInput('program_keypair');
     const cluster = core.getInput('cluster') || 'devnet';
     const programPath = core.getInput('program_path') || '.';
@@ -27593,9 +27593,24 @@ async function run() {
     // Setup deployer keypair
     core.info('🔑 Setting up deployer keypair...');
     const deployKeypairPath = path.join(process.env.RUNNER_TEMP, 'deploy-keypair.json');
-    fs.writeFileSync(deployKeypairPath, solanaKeypair);
-    fs.chmodSync(deployKeypairPath, '600');
-    
+
+    if (solanaKeypair) {
+      // Use provided keypair
+      fs.writeFileSync(deployKeypairPath, solanaKeypair);
+      fs.chmodSync(deployKeypairPath, '600');
+      core.info('✅ Using provided deployer keypair');
+    } else {
+      // Generate new keypair
+      core.info('🔑 Generating new deployer keypair...');
+      await exec.exec('solana-keygen', [
+        'new',
+        '--outfile', deployKeypairPath,
+        '--no-bip39-passphrase',
+        '--force'
+      ]);
+      core.info('✅ Generated new deployer keypair');
+    }
+
     await exec.exec('solana', ['config', 'set', '--keypair', deployKeypairPath]);
 
     // Get wallet address
