@@ -27,6 +27,12 @@ pub struct MoonData {
     pub text: String,
 }
 
+#[derive(BorshSerialize, BorshDeserialize, Debug)]
+pub struct HelloMessage {
+    pub message: String,
+    pub timestamp: i64,
+}
+
 entrypoint!(process_instruction);
 
 pub fn process_instruction(
@@ -41,11 +47,30 @@ pub fn process_instruction(
         return Err(ProgramError::InvalidAccountData);
     }
 
-    let moon = MoonData::try_from_slice(instruction_data)
-        .map_err(|_| ProgramError::InvalidInstructionData)?;
+    // Try to deserialize as HelloMessage first (Hello World with timestamp)
+    if let Ok(hello_msg) = HelloMessage::try_from_slice(instruction_data) {
+        hello_msg.serialize(&mut &mut data_account.data.borrow_mut()[..])?;
 
-    moon.serialize(&mut &mut data_account.data.borrow_mut()[..])?;
+        let date_time = format_datetime(hello_msg.timestamp);
+        msg!("Hello World! Message: {}", hello_msg.message);
+        msg!("Timestamp: {} ({})", hello_msg.timestamp, date_time);
+        Ok(())
+    }
+    // Fallback to original MoonData structure
+    else if let Ok(moon) = MoonData::try_from_slice(instruction_data) {
+        moon.serialize(&mut &mut data_account.data.borrow_mut()[..])?;
 
-    msg!("Saved text: {}", moon.text);
-    Ok(())
+        msg!("Saved text: {}", moon.text);
+        Ok(())
+    }
+    else {
+        Err(ProgramError::InvalidInstructionData)
+    }
+}
+
+fn format_datetime(timestamp: i64) -> String {
+    // Convert Unix timestamp to a readable format
+    let seconds = timestamp / 1000;
+    let millis = timestamp % 1000;
+    format!("{}ms since epoch", seconds)
 }
