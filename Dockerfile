@@ -42,11 +42,8 @@ RUN mkdir -p /app /root/.claude-router/logs /root/.claude-router/plugins /root/.
     cp /box/CLAUDE.md /root/.claude/CLAUDE.md && \
     cp /box/ccr-config.json /root/.claude-router/config.json
 
-# 安装 npm 全局包并构建项目
+# 安装 npm 全局包
 RUN npm install -g @anthropic-ai/claude-code @musistudio/claude-code-router && \
-    cd /box/example && cargo build-sbf && \
-    # 清理 Rust 构建缓存
-    rm -rf /root/.cargo/registry/cache /root/.cargo/git/db && \
     # 清理 npm 缓存
     npm cache clean --force
 
