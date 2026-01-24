@@ -1,0 +1,65 @@
+# Auto-deploy workflow for the example contract
+# This workflow automatically deploys the example contract to devnet
+# when changes are pushed to the example/ directory
+
+name: Auto-Deploy Example Contract
+
+on:
+    push:
+        branches:
+            - main
+            - master
+        paths:
+            - 'example/**'
+            - '.github/workflows/auto-deploy-example.yml'
+    workflow_dispatch:
+        inputs:
+            cluster:
+                description: "Solana cluster to deploy to"
+                required: false
+                default: "devnet"
+                type: choice
+                options:
+                    - devnet
+                    - testnet
+                    - mainnet-beta
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Deploy Solana Program
+              uses: ./
+              with:
+                  solana_keypair: ${{ secrets.SOLANA_KEYPAIR }}
+                  program_keypair: ${{ secrets.PROGRAM_KEYPAIR }}
+                  cluster: ${{ github.event.inputs.cluster || 'devnet' }}
+                  program_path: "./example"
+                  program_name: "example"
+                  airdrop_amount: "2"
+              id: deploy
+
+            - name: Display Deployment Results
+              run: |
+                  echo "✅ Program deployed successfully!"
+                  echo "📦 Program ID: ${{ steps.deploy.outputs.program_id }}"
+                  echo "🌐 Cluster: ${{ github.event.inputs.cluster || 'devnet' }}"
+                  echo "📍 Program Address: ${{ steps.deploy.outputs.program_address }}"
+                  echo "🔄 Triggered by: ${{ github.event_name }}"
+
+            - name: Comment on PR (if applicable)
+              if: github.event_name == 'pull_request'
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const programId = '${{ steps.deploy.outputs.program_id }}';
+                      const cluster = '${{ github.event.inputs.cluster || 'devnet' }}';
+                      github.rest.issues.createComment({
+                          issue_number: context.issue.number,
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          body: `## 🚀 Deployment Successful\n\n- **Program ID**: \`${programId}\`\n- **Cluster**: ${cluster}\n- **Triggered by**: ${{ github.event_name }}`
+                      })
