@@ -14,7 +14,7 @@ RUN apt-get update && \
         libclang-dev \
         protobuf-compiler \
         libssl-dev \
-        ca-certificates && \
+        ca-certificates openssh-client vim && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # 安装 Solana 工具链
