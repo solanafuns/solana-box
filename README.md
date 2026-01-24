@@ -127,6 +127,92 @@ claude mcp add --transport http solana-mcp-server https://mcp.solana.com/mcp
 
 This command adds the Solana MCP server, which provides Claude with access to Solana-specific tools and context for better code assistance and development workflows.
 
+### Claude Code with Third-Party LLMs
+
+Claude Code can be configured to use third-party LLM services (like MIMO, OpenRouter, etc.) instead of the default Anthropic models. This is useful for cost optimization or accessing different model providers.
+
+#### Configuration Files
+
+Claude Code uses two configuration files located in `~/.claude/`:
+
+- **`~/.claude/settings.json`** - Global settings configuration
+- **`~/.claude.json`** - User configuration file
+
+#### Using MIMO API
+
+To configure Claude Code to use MIMO API, create or edit `~/.claude/settings.json`:
+
+```json
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.xiaomimimo.com/anthropic",
+    "ANTHROPIC_AUTH_TOKEN": "$MIMO_API_KEY",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "mimo-v2-flash",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "mimo-v2-flash",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "mimo-v2-flash"
+  }
+}
+```
+
+**Configuration Options:**
+- `ANTHROPIC_BASE_URL` - The API endpoint for the third-party LLM service
+- `ANTHROPIC_AUTH_TOKEN` - API authentication token (can use environment variable reference like `$MIMO_API_KEY`)
+- `ANTHROPIC_DEFAULT_*_MODEL` - Maps Claude model names to third-party model names
+
+#### Setting Up Environment Variables
+
+Before using, set your API key as an environment variable:
+
+```bash
+export MIMO_API_KEY="your_api_key_here"
+```
+
+#### User Configuration
+
+Create or edit `~/.claude.json` for user settings:
+
+```json
+{
+  "hasCompletedOnboarding": true
+}
+```
+
+#### Verification
+
+Verify your configuration:
+
+```bash
+# View current configuration
+cat ~/.claude/settings.json
+
+# Test Claude Code
+claude --version
+```
+
+#### Troubleshooting
+
+**Configuration not taking effect:**
+```bash
+# Validate JSON format
+python -m json.tool ~/.claude/settings.json
+```
+
+**Proxy configuration (if needed):**
+```bash
+export https_proxy=http://127.0.0.1:7890
+export http_proxy=http://127.0.0.1:7890
+export all_proxy=socks5://127.0.0.1:7890
+```
+
+**Revert to default Anthropic:**
+Simply remove or comment out the `ANTHROPIC_BASE_URL` configuration.
+
+#### Security Notes
+
+- **Never** store API keys directly in configuration files
+- Use environment variable references (e.g., `$MIMO_API_KEY`)
+- Keep configuration files secure and avoid committing them to version control
+
 ### Solana Dev Skill
 
 The container includes the official **Solana Development Skill** from the Solana Foundation, which provides Claude Code with comprehensive knowledge of modern Solana development best practices (January 2026).
