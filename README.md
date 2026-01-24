@@ -127,6 +127,54 @@ claude mcp add --transport http solana-mcp-server https://mcp.solana.com/mcp
 
 This command adds the Solana MCP server, which provides Claude with access to Solana-specific tools and context for better code assistance and development workflows.
 
+### Solana Dev Skill
+
+The container includes the official **Solana Development Skill** from the Solana Foundation, which provides Claude Code with comprehensive knowledge of modern Solana development best practices (January 2026).
+
+**What the skill provides:**
+- **UI Framework**: Solana Foundation framework-kit (`@solana/client` + `@solana/react-hooks`) for React/Next.js
+- **Client SDK**: `@solana/kit` (v5.x) for all new client/RPC/transaction code
+- **Legacy Interop**: `@solana/web3-compat` for bridging to web3.js dependencies
+- **Programs**: Anchor (default) and Pinocchio for high-performance needs
+- **Testing**: LiteSVM/Mollusk for unit tests, Surfpool for integration testing
+- **Codegen**: Codama-first IDL and client generation
+- **Security**: Comprehensive vulnerability patterns and prevention
+
+**Installation:**
+
+The skill is pre-installed in the container. To verify or reinstall:
+
+```bash
+# Check if skill is installed
+npx add-skill https://github.com/solana-foundation/solana-dev-skill
+```
+
+**Usage Examples:**
+
+Once installed, you can ask Claude Code to help with:
+
+```bash
+# "Help me set up a Next.js app with Solana wallet connection"
+# "Create an Anchor program for a simple escrow"
+# "Convert this Anchor program to Pinocchio for better CU efficiency"
+# "How do I integrate a legacy web3.js library with my Kit-based app?"
+# "Write LiteSVM tests for my token transfer instruction"
+# "Review this program for security issues"
+```
+
+**Stack Decisions:**
+
+| Layer | Default Choice | Alternative |
+|-------|---------------|-------------|
+| UI Framework | framework-kit | ConnectorKit (headless) |
+| Client SDK | @solana/kit | @solana/web3-compat (boundary) |
+| Program Framework | Anchor | Pinocchio (performance) |
+| Unit Testing | LiteSVM / Mollusk | - |
+| Integration Testing | Surfpool | solana-test-validator |
+| Client Generation | Codama | Kinobi (Umi) |
+
+For more details, see the [Solana Dev Skill repository](https://github.com/solana-foundation/solana-dev-skill).
+
 ## What's Included
 
 - **Ubuntu 24.04** - Base operating system
